@@ -1,6 +1,6 @@
 import os
 from typing import Dict, List, Optional, Tuple, Union
-from numpy as np
+import numpy as np
 
 class BaseEmbeddings:
     """ Base class for embeddings
