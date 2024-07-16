@@ -1,4 +1,5 @@
 import os
+import torch
 from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 
@@ -9,7 +10,7 @@ class BaseEmbeddings:
         self.path = path
         self.is_api = is_api
 
-    def get_embedding(self, texts: List[str]) -> List[float]:
+    def get_embedding(self, text: str) -> List[float]:
         raise NotImplemented
     
     @classmethod
