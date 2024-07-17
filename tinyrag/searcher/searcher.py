@@ -5,15 +5,27 @@ import json
 import copy
 from loguru import logger
 
-from .emb_searcher import EmbSearcher
+from typing import Dict, List, Optional, Tuple, Union
 
 from embedding import BaseEmbeddings
-
+from .emb_searcher import EmbSearcher
 class Searcher:
-    def __init__(self, emb_model: BaseEmbeddings, vec_db_path: str) -> None:
+    def __init__(self, emb_model: BaseEmbeddings, base_dir="data/index") -> None:
         self.emb_model = emb_model
-        self.emb_searcher = EmbSearcher()
-        self.emb_searcher.load(vec_db_path)
+        self.emb_searcher = EmbSearcher(base_dir)
+
+    def build_emb_db(self, docs: List[str], index_name="index_test"):
+        index_dim = len(self.emb_model.get_embedding("test_dim"))
+        self.emb_searcher.build(index_dim, index_name)
+        for doc in docs:
+            doc_emb = self.emb_model.get_embedding(doc)
+            self.emb_searcher.insert(doc_emb, doc)
+
+    def load_emb_db(self, index_name: str):
+        self.emb_searcher.load(index_name)
+    
+    def save_emb_db(self, index_name: str):
+        self.emb_searcher.save(index_name)
 
     def rank(self, query, recall_list):
         rank_result = []

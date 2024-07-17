@@ -27,7 +27,9 @@ class EmbSearcher:
         self.invert_index.insert(emb)
         self.forward_index.append(doc)
 
-    def save(self):
+    def save(self, index_name):
+        self.index_name = index_name
+        self.index_folder_path =  os.path.join(self.base_dir, self.index_name)
         with open(self.index_folder_path + "/forward_index.txt", "w", encoding="utf8") as f:
             for data in self.forward_index:
                 f.write("{}\n".format(json.dumps(data, ensure_ascii=False)))

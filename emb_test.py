@@ -8,7 +8,7 @@ def zhipuai_test():
     emb1 = zhipu_emb.get_embedding("你好") 
     emb2 = zhipu_emb.get_embedding("您好")
 
-    print(emb1)
+    print(len(emb1))
     print(zhipu_emb.cosine_similarity(emb1, emb2))
     print(zhipu_emb.cosine_similarity2(emb1, emb2))
 
@@ -18,10 +18,10 @@ def hf_test():
     emb1 = hf_emb.get_embedding("你好") 
     emb2 = hf_emb.get_embedding("您好")
 
-    print(emb1)
+    print(len(emb1))
     print(hf_emb.cosine_similarity(emb1, emb2))
     print(hf_emb.cosine_similarity2(emb1, emb2))
 
 
 if __name__ == "__main__":
-    hf_test() 
+    zhipuai_test() 

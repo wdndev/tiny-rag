@@ -16,4 +16,4 @@ class HFSTEmbedding(BaseEmbeddings):
         st_embedding = self.st_model.encode([text], normalize_embeddings=True)
         return st_embedding[0].tolist()
     
-    
+
