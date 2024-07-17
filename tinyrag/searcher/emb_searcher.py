@@ -36,7 +36,7 @@ class EmbSearcher:
     
     def load(self, index_name):
         self.index_name = index_name
-        self.index_folder_path = self.INDEX_FOLDER_PATH_TEMPLATE.format(index_name)
+        self.index_folder_path =  os.path.join(self.base_dir, self.index_name)
 
         self.invert_index = EmbIndex()
         self.invert_index.load(self.index_folder_path + "/invert_index.faiss")
