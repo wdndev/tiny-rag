@@ -28,3 +28,6 @@
 - 支持常用文档embedding
 - 支持pdf，doc文档embedding
 - 支持图片embedding
+
+
+https://github.com/ZBayes/basic_rag/blob/main/src/searcher/searcher.py
