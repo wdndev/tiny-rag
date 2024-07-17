@@ -31,16 +31,3 @@ class ZhipuEmbedding(BaseEmbeddings):
         response = self.client.embeddings.create(model="embedding-2", input=text)
         return response.data[0].embedding
 
-
-def main():
-    """
-    Main function to demonstrate embedding generation using the Zhipu AI API.
-    """
-    api_key = "4f50b90c8cf1763b990ba942ddd955a8.9PHAwesEpIIfsB2a"  # Example API key
-    zhipu_emb = ZhipuEmbedding(api_key=api_key)  # Instantiate the ZhipuEmbedding class
-    emb = zhipu_emb.get_embedding("你好")  # Generate an embedding for the Chinese greeting
-    print(emb)  # Print the embedding
-
-
-if __name__ == "__main__":
-    main() 

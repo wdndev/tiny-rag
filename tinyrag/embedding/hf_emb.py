@@ -16,13 +16,4 @@ class HFSTEmbedding(BaseEmbeddings):
         st_embedding = self.st_model.encode([text], normalize_embeddings=True)
         return st_embedding[0].tolist()
     
-
-def main():
-    model_id = "/Users/wangdongnian/Documents/code/wdn_code/model/bge-small-zh-v1.5"
-    hf_emb = HFSTEmbedding(path=model_id)
-    emb = hf_emb.get_embedding("你好")
-    print(emb)
-    print(len(emb))
-
-if __name__ == "__main__":
-    main()
+    
