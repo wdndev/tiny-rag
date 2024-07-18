@@ -8,11 +8,14 @@ from .md_parser import MDParser
 from .txt_parser import TXTParser
 from .img_parser import ImgParser
 
-from config import IMAGE_TYPES
+from embedding import BaseEmbeddings
 
 import nltk
 nltk.download("punkt")
 
+DATA_TYPES = ["text", "image"]
+TEXT_TYPES = ["pdf", "txt", "md"]
+IMAGE_TYPES = ["png", "jpg", "jpeg"]
 
 parsers: List[BaseParser] = [PDFParser, WordParser, PPTXParser, MDParser, TXTParser, ImgParser]
 
@@ -24,7 +27,7 @@ def _get_parser(suffix: str) -> BaseParser:
     return None
 
 
-def process_file(file_path: str, suffix: Any, model: Any):
+def process_file(file_path: str, suffix: Any, model: BaseEmbeddings):
     fpath = Path(file_path)
     suffix = suffix if suffix is not None else fpath.suffix.strip('.')
     if suffix in IMAGE_TYPES:
@@ -35,4 +38,4 @@ def process_file(file_path: str, suffix: Any, model: Any):
     if not parser:
         raise NotImplementedError("Suffix of file is not supported.")
     
-    return parser(file_path, model, None).parse()
+    return parser(file_path, model).parse()

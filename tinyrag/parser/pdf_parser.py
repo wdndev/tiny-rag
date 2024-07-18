@@ -7,8 +7,6 @@ import re
 import fitz
 from nltk.tokenize import sent_tokenize
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from .base_parser import BaseParser
 
 
@@ -17,8 +15,8 @@ class PDFParser(BaseParser):
     Parser for PDF files
     """
     type = 'pdf'
-    def __init__(self, file_path: str=None, model=None, out_path: str=None) -> None:
-        super().__init__(file_path, model, out_path)
+    def __init__(self, file_path: str=None, model=None) -> None:
+        super().__init__(file_path, model)
         
     def parse(self) -> List[Dict]:
         page_sents = self._to_sentences()
@@ -32,7 +30,7 @@ class PDFParser(BaseParser):
             file_dict['author'] = self.metadata["author"]
             file_dict['page'] = pageno
             file_dict['content'] = sent
-            file_dict['embedding'] = None
+            file_dict['embedding'] = self.model.get_embedding(sent)
             file_dict['file_path'] = self.file_path
             file_dict['subject'] = self.metadata["subject"]
             

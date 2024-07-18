@@ -12,8 +12,8 @@ class ImgParser(BaseParser):
     Parser for image files
     """
     type = 'image'
-    def __init__(self, file_path: str=None, model=None, out_path: str=None) -> None:
-        super().__init__(file_path, model, out_path)
+    def __init__(self, file_path: str=None, model=None) -> None:
+        super().__init__(file_path, model)
         
     def parse(self) -> List[Dict]:
 
