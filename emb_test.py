@@ -1,5 +1,8 @@
 from tinyrag import ZhipuEmbedding
 from tinyrag import HFSTEmbedding
+from tinyrag import ImgEmbedding
+
+from PIL import Image
 
 
 def zhipuai_test():
@@ -22,6 +25,15 @@ def hf_test():
     print(hf_emb.cosine_similarity(emb1, emb2))
     print(hf_emb.cosine_similarity2(emb1, emb2))
 
+def img_test():
+    model_id = "models/clip-ViT-B-32"
+    img_emb = ImgEmbedding(model_id)
+    img_path = "data/img/Llama3_Repo.jpeg"
+    img = Image.open(img_path)
+    emb = img_emb.get_embedding(img)
+    # print(type(emb))
+    print(len(emb))
+
 
 if __name__ == "__main__":
-    zhipuai_test() 
+    hf_test() 

@@ -33,9 +33,9 @@ class PDFParser(BaseParser):
             file_dict['embedding'] = self.model.get_embedding(sent)
             file_dict['file_path'] = self.file_path
             file_dict['subject'] = self.metadata["subject"]
-            
+
             self.parse_output.append(file_dict)
-        
+
         return self.parse_output
 
     def _to_sentences(self) -> List[Tuple[int, str]]:

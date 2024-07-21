@@ -21,7 +21,7 @@ class PPTXParser(BaseParser):
         page_sents = self._to_sentences()  
         if not page_sents:  
             return None  
-  
+
         self.parse_output = []  
         for pageno, sents in page_sents:  
             for sent in sents:  
@@ -33,9 +33,9 @@ class PPTXParser(BaseParser):
                 file_dict['embedding'] = self.model.get_embedding(sent)
                 file_dict['file_path'] = self.file_path  
                 file_dict['subject'] = None
-  
+
                 self.parse_output.append(file_dict)  
-  
+
         return self.parse_output  
   
     def _to_sentences(self) -> List[Tuple[int, str]]:  
