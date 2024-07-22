@@ -1,14 +1,14 @@
 from collections import defaultdict
 from typing import List, Any, Optional, Dict
 
-from embedding import BaseEmbeddings
+from ..embedding import BaseEmbeddings
 
 class BaseParser:
     """
     Top class of data parser
     """
     type = None
-    def __init__(self, file_path: str, model: BaseEmbeddings) -> None:
+    def __init__(self, file_path: str, model: BaseEmbeddings = None) -> None:
         self.file_path: str = file_path
         self.model: BaseEmbeddings = model
         self._metadata: Optional[defaultdict] = None
@@ -36,3 +36,9 @@ class BaseParser:
         Parse metadata
         """
         raise NotImplementedError()
+    
+    def get_embedding(self, obj: Any):
+        if self.model is not None:
+            return self.model.get_embedding(obj)
+        else:
+            return None

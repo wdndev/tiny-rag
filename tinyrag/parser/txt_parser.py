@@ -29,7 +29,7 @@ class TXTParser(BaseParser):
             file_dict['author'] = None
             file_dict['page'] = None
             file_dict['content'] = sent
-            file_dict['embedding'] = self.model.get_embedding(sent)
+            file_dict['embedding'] = self.get_embedding(sent)
             file_dict['file_path'] = self.file_path
             file_dict['subject'] = None
             

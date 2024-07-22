@@ -22,8 +22,8 @@ class ImgParser(BaseParser):
         self.parse_output = []
         file_dict = {}
         file_dict['content'] = None
-        file_dict['embedding'] = None
-        print("embedding: ", type(file_dict['embedding']), file_dict['embedding'].shape)
+        file_dict['embedding'] = self.get_embedding(img)
+        # print("embedding: ", type(file_dict['embedding']), len(file_dict['embedding']))
         file_dict['file_path'] = self.file_path
             
         self.parse_output.append(file_dict)
