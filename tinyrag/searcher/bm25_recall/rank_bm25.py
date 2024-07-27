@@ -8,7 +8,7 @@ class BM25:
         - 如果数据集中存在很多低频词语，那么BM25Okapi可能更适合；
         - 而对于文档长度差异较大的数据集，BM25L或BM25Plus可能表现更好。
     """
-    def __init__(self, corpus, tokenizer=None) -> None:
+    def __init__(self, corpus, tokenizer=None):
         self.corpus_size = 0        # 文档总数
         self.avgdl = 0              # 文档平均长度
         self.doc_freqs = []         # 每个文档中词语的频率
@@ -92,11 +92,12 @@ class BM25:
 class BM25Okapi(BM25):
     """ 经典的BM25实现，通过设置IDF的下限来处理稀有词语的情况。
     """
-    def __init__(self, corpus, tokenizer=None, k1=1.5, b=0.75, epsilon=0.25) -> None:
-        super().__init__(corpus, tokenizer)
+    def __init__(self, corpus, tokenizer=None, k1=1.5, b=0.75, epsilon=0.25):
         self.k1 = k1    # 控制文档频率的影响程度
         self.b = b      # 控制文档长度的影响程度
         self.epsilon = epsilon  # IDF值的下限因子
+        super().__init__(corpus, tokenizer)
+        
 
     def _calc_idf(self, nd):
         """ 计算文档和语料库中术语的频率。

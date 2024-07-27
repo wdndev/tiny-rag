@@ -8,7 +8,7 @@ from loguru import logger
 from typing import Dict, List, Optional, Tuple, Union
 
 from embedding import BaseEmbeddings
-from .emb_searcher import EmbSearcher
+from .emb_recall.emb_searcher import EmbSearcher
 class Searcher:
     def __init__(self, emb_model: BaseEmbeddings, base_dir="data/index") -> None:
         self.emb_model = emb_model
