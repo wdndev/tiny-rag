@@ -8,11 +8,11 @@ from loguru import logger
 from typing import Dict, List, Optional, Tuple, Union
 
 from embedding import BaseEmbeddings
-from .emb_recall.emb_searcher import EmbSearcher
+from .emb_recall.emb_retriever import EmbRetriever
 class Searcher:
     def __init__(self, emb_model: BaseEmbeddings, base_dir="data/index") -> None:
         self.emb_model = emb_model
-        self.emb_searcher = EmbSearcher(base_dir)
+        self.emb_searcher = EmbRetriever(base_dir)
 
     def build_emb_db(self, docs: List[str], index_name="index_test"):
         index_dim = len(self.emb_model.get_embedding("test_dim"))
