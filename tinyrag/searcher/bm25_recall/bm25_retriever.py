@@ -7,14 +7,25 @@ from tinyrag.searcher.bm25_recall.rank_bm25 import BM25Okapi
 
 
 class BM25Retriever:
-    def __init__(self, txt_list: List[str], base_dir="data/db/bm_corpus") -> None:
+    def __init__(self, txt_list: List[str]=[], base_dir="data/db/bm_corpus") -> None:
         self.data_list = txt_list
-        self.tokenized_corpus = [self.tokenize(doc) for doc in self.data_list]
+        
 
         self.base_dir = base_dir
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir, exist_ok=True)
 
+        if len(self.data_list) != 0:
+            self.tokenized_corpus = [self.tokenize(doc) for doc in self.data_list]
+            # 初始化 BM25Okapi 实例
+            self.bm25 = BM25Okapi(self.tokenized_corpus)
+            print("初始化数据库！ ")
+        else:
+            print("未初始化数据库，请加载数据库！ ")
+        
+    def build(self, txt_list: List[str]):
+        self.data_list = txt_list
+        self.tokenized_corpus = [self.tokenize(doc) for doc in self.data_list]
         # 初始化 BM25Okapi 实例
         self.bm25 = BM25Okapi(self.tokenized_corpus)
 
