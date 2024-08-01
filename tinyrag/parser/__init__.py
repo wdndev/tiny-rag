@@ -8,7 +8,7 @@ from .md_parser import MDParser
 from .txt_parser import TXTParser
 from .img_parser import ImgParser
 
-from ..embedding import BaseEmbeddings
+from ..embedding.base_emb import BaseEmbedding
 
 import nltk
 nltk.download("punkt")
@@ -27,7 +27,7 @@ def _get_parser(suffix: str) -> BaseParser:
     return None
 
 
-def parser_file(file_path: str, model: BaseEmbeddings,  suffix: Any):
+def parser_file(file_path: str, model: BaseEmbedding,  suffix: Any):
     fpath = Path(file_path)
     suffix = suffix if suffix is not None else fpath.suffix.strip('.')
     if suffix in IMAGE_TYPES:

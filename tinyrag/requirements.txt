@@ -2,3 +2,4 @@
 fitz
 frontend
 PyMuPDF
+modelscope

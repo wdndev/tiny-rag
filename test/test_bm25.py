@@ -1,9 +1,12 @@
 import sys
+sys.path.append(".")
+
+import sys
 import os
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../')
 
-from tinyrag.searcher.bm25_recall.rank_bm25 import BM25Okapi, BM25L, BM25Plus
+from tinyrag import BM25Okapi, BM25L, BM25Plus
 import re
 
 

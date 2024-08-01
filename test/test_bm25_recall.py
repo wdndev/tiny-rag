@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from tinyrag import BM25Retriever
 
 import jieba

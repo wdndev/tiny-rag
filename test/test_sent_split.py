@@ -1,4 +1,7 @@
-from tinyrag.sentence_splitter import SentenceSplitter
+import sys
+sys.path.append(".")
+
+from tinyrag import SentenceSplitter
 
 
 def main():

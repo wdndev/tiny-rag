@@ -1,16 +1,16 @@
 from collections import defaultdict
 from typing import List, Any, Optional, Dict
 
-from ..embedding import BaseEmbeddings
+from tinyrag.embedding.base_emb import BaseEmbedding
 
 class BaseParser:
     """
     Top class of data parser
     """
     type = None
-    def __init__(self, file_path: str, model: BaseEmbeddings = None) -> None:
+    def __init__(self, file_path: str, model: BaseEmbedding = None) -> None:
         self.file_path: str = file_path
-        self.model: BaseEmbeddings = model
+        self.model: BaseEmbedding = model
         self._metadata: Optional[defaultdict] = None
         self.parse_output: Any = None
 

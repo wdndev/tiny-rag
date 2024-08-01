@@ -1,8 +1,8 @@
 from typing import Dict, List, Optional, Tuple, Union
 
-from .base_emb import BaseEmbeddings  # Assuming this is a custom module for base embeddings
+from tinyrag.embedding.base_emb import BaseEmbedding # Assuming this is a custom module for base embeddings
 
-class OpenAIEmbedding(BaseEmbeddings):
+class OpenAIEmbedding(BaseEmbedding):
     """
     A class for generating embeddings using the OpenAI API.
     """

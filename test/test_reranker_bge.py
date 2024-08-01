@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from tinyrag import RerankerBGEM3
 
 def test_bge_reranker():

@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 import numpy as np
 
-class BaseEmbeddings(ABC):
+class BaseEmbedding(ABC):
     """
     Base class for embeddings
     """

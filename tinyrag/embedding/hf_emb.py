@@ -1,9 +1,9 @@
 import torch
 from typing import Dict, List, Optional, Tuple, Union
-from .base_emb import BaseEmbeddings
+from tinyrag.embedding.base_emb import BaseEmbedding
 from sentence_transformers import SentenceTransformer, util
 
-class HFSTEmbedding(BaseEmbeddings):
+class HFSTEmbedding(BaseEmbedding):
     """
     class for Hugging face sentence embeddings
     """

@@ -1,7 +1,5 @@
-from .base_emb import BaseEmbeddings
+from .base_emb import BaseEmbedding
 from .hf_emb import HFSTEmbedding
-from .zhipu_emb import ZhipuEmbedding
-from .openai_emb import OpenAIEmbedding
 from .img_emb import ImgEmbedding
-
-
+from .openai_emb import OpenAIEmbedding
+from .zhipu_emb import ZhipuEmbedding

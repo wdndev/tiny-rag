@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from tinyrag import Searcher
 import numpy as np
 

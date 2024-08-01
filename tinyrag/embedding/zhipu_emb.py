@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional, Tuple, Union
-from .base_emb import BaseEmbeddings  # Assuming this is a custom module for base embeddings
+from tinyrag.embedding.base_emb import BaseEmbedding  # Assuming this is a custom module for base embeddings
 
-class ZhipuEmbedding(BaseEmbeddings):
+class ZhipuEmbedding(BaseEmbedding):
     """
     A class for generating embeddings using the Zhipu AI API.
     """

@@ -1,3 +1,6 @@
+import sys
+sys.path.append(".")
+
 from tinyrag import EmbRetriever
 from tinyrag import HFSTEmbedding, EmbIndex
 import numpy as np
