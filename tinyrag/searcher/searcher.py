@@ -10,7 +10,7 @@ from tinyrag.searcher.emb_recall.emb_retriever import EmbRetriever
 from tinyrag.searcher.reranker.reanker_bge_m3 import RerankerBGEM3
 
 class Searcher:
-    def __init__(self, emb_model_id, ranker_model_id, device, base_dir) -> None:
+    def __init__(self, emb_model_id: str, ranker_model_id: str, device:str="cpu", base_dir: str="data/db") -> None:
         # self.base_dir = "data/db"
         # emb_model_id = "models/bge-small-zh-v1.5"
         # ranker_model_id = "models/bge-reranker-base"
