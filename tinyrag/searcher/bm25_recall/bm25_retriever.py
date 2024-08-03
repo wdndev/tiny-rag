@@ -1,6 +1,7 @@
 import os
 import pickle
 import jieba
+from tqdm import tqdm
 from typing import List, Any, Tuple
 
 from tinyrag.searcher.bm25_recall.rank_bm25 import BM25Okapi
@@ -16,16 +17,18 @@ class BM25Retriever:
             os.makedirs(self.base_dir, exist_ok=True)
 
         if len(self.data_list) != 0:
-            self.tokenized_corpus = [self.tokenize(doc) for doc in self.data_list]
+            self.build(self.data_list)
             # 初始化 BM25Okapi 实例
-            self.bm25 = BM25Okapi(self.tokenized_corpus)
+            # self.bm25 = BM25Okapi(self.tokenized_corpus)
             print("初始化数据库！ ")
         else:
             print("未初始化数据库，请加载数据库！ ")
         
     def build(self, txt_list: List[str]):
         self.data_list = txt_list
-        self.tokenized_corpus = [self.tokenize(doc) for doc in self.data_list]
+        self.tokenized_corpus = []
+        for doc in tqdm(self.data_list, desc="bm25 build "):
+            self.tokenized_corpus.append(self.tokenize(doc))
         # 初始化 BM25Okapi 实例
         self.bm25 = BM25Okapi(self.tokenized_corpus)
 

@@ -1,7 +1,7 @@
 import json
 import copy
 from loguru import logger
-
+from tqdm import tqdm
 from typing import Dict, List, Optional, Tuple, Union
 
 from tinyrag.embedding.hf_emb import HFSTEmbedding
@@ -35,7 +35,7 @@ class Searcher:
     def build_db(self, docs: List[str]):
         self.bm25_retriever.build(docs)
         logger.info("bm25 retriever build success...")
-        for doc in docs:
+        for doc in tqdm(docs, desc="emb build "):
             doc_emb = self.emb_model.get_embedding(doc)
             self.emb_retriever.insert(doc_emb, doc)
         logger.info("emb retriever build success...")
