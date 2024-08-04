@@ -7,7 +7,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
 
 from tinyrag.llm.base_llm import BaseLLM
 
-class Qwen2LLM(BaseLLM):
+class TinyLLM(BaseLLM):
     def __init__(self, model_id_key: str, device: str = "cpu", is_api=False) -> None:
         super().__init__(model_id_key, device, is_api)
 
@@ -22,6 +22,7 @@ class Qwen2LLM(BaseLLM):
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_id_key,  # 分词器标识符
             use_fast=False,
+            trust_remote_code=True
         )
         
         # 加载配置文件
@@ -29,6 +30,9 @@ class Qwen2LLM(BaseLLM):
             self.model_id_key,  # 配置文件标识符
             trust_remote_code=True  # 允许加载远程代码
         )
+
+        if self.device == "cpu":
+            self.model.float()
         
         # 设置模型为评估模式
         self.model.eval()

@@ -57,13 +57,13 @@ class Searcher:
     def search(self, query:str, top_n=3) -> list:
         bm25_recall_list = self.bm25_retriever.search(query, top_n)
         logger.info("bm25 recall text num: {}".format(len(bm25_recall_list)))
-        for text in bm25_recall_list:
-            print(text)
+        # for text in bm25_recall_list:
+        #     print(text)
         query_emb = self.emb_model.get_embedding(query)
         emb_recall_list = self.emb_retriever.search(query_emb, top_n)
         logger.info("emb recall text num: {}".format(len(emb_recall_list)))
-        for text in emb_recall_list:
-            print(text)
+        # for text in emb_recall_list:
+        #     print(text)
         recall_unique_text = set()
         for idx, text, score in bm25_recall_list:
             recall_unique_text.add(text)

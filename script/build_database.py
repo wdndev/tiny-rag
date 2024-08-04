@@ -8,7 +8,7 @@ from loguru import logger
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from file_helpers import *
+from tinyrag.utils import *
 
 from tinyrag import SentenceSplitter
 from tinyrag import Searcher

@@ -20,7 +20,8 @@ class Qwen2LLM(BaseLLM):
         )
         # 加载分词器
         self.tokenizer = AutoTokenizer.from_pretrained(
-            self.model_id_key  # 分词器标识符
+            self.model_id_key,  # 分词器标识符
+            trust_remote_code=True
         )
         
         # 加载配置文件
@@ -28,6 +29,9 @@ class Qwen2LLM(BaseLLM):
             self.model_id_key,  # 配置文件标识符
             trust_remote_code=True  # 允许加载远程代码
         )
+
+        if self.device == "cpu":
+            self.model.float()
         
         # 设置模型为评估模式
         self.model.eval()
