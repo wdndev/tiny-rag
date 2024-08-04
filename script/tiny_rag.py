@@ -17,9 +17,9 @@ def build_db(config_path, data_path):
     raw_data_list = read_json_to_list(data_path)
     logger.info("load raw data success! ")
     # 数据太多了，随机采样 100 条数据
-    raw_data_part = random.sample(raw_data_list, 100)
+    # raw_data_part = random.sample(raw_data_list, 100)
 
-    text_list = [item["completion"] for item in raw_data_part]
+    text_list = [item["completion"] for item in raw_data_list]
 
     # config_path = "config/build_config.json"
     config = read_json_to_list(config_path)
