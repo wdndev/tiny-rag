@@ -1,5 +1,4 @@
 models
 data
-script
 *.pyc
 __pycache__
