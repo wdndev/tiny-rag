@@ -25,14 +25,14 @@ def main():
     json_path = "data/raw_data/wikipedia-cn-20230720-filtered.json"
     raw_data_list = read_json_to_list(json_path)
     logger.info("load raw data success! ")
-    # 数据太多了，随机采样 10w 条数据
-    raw_data_part = random.sample(raw_data_list, 100000)
+    # 数据太多了，随机采样 5w 条数据
+    raw_data_part = random.sample(raw_data_list, 50000)
 
     print(len(raw_data_part))
     print(raw_data_part[10])
 
     sent_split_model_id = "models/nlp_bert_document-segmentation_chinese-base"
-    sent_split_model = SentenceSplitter(use_model=False, min_sent_len=300, model_path=sent_split_model_id)
+    sent_split_model = SentenceSplitter(use_model=False, sentence_size=256, model_path=sent_split_model_id)
     logger.info("load sentence splitter model success! ")
 
     # logger.info("split sentence ...... ")
@@ -49,7 +49,7 @@ def main():
         for future in tqdm(as_completed(future_to_item), total=len(raw_data_part)):
             try:
                 sent_res = future.result()
-                sent_res = [item for item in sent_res if len(item) > 100]
+                sent_res = [item for item in sent_res if len(item) > 5]
                 txt_list.extend(sent_res)
             except Exception as exc:
                 logger.error(f"Generated an exception: {exc}")

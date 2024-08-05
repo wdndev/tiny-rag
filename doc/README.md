@@ -18,3 +18,7 @@ rag
 - https://www.llamaindex.ai/blog/boosting-rag-picking-the-best-embedding-reranker-models-42d079022e83
 - https://blog.csdn.net/lichunericli/article/details/136274285
 
+句子切分：
+
+- https://aibard123.com/digest/2024/0205/%E8%AF%A6%E8%BF%B0RAG%E7%9A%845%E6%AD%A5%E6%B5%81%E7%A8%8B%E5%92%8C12%E4%B8%AA%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5%E4%B8%87%E5%AD%97%E9%95%BF%E6%96%87/
+- https://aibard123.com/digest/2024/0326/RAG%E7%B3%BB%E5%88%9705%E5%9F%BA%E4%BA%8E%E8%AF%AD%E4%B9%89%E7%9A%84Chunk%E5%88%86%E5%89%B2/

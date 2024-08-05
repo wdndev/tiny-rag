@@ -3,11 +3,16 @@ import copy
 from loguru import logger
 from tqdm import tqdm
 from typing import Dict, List, Optional, Tuple, Union
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from tinyrag.embedding.hf_emb import HFSTEmbedding
 from tinyrag.searcher.bm25_recall.bm25_retriever import BM25Retriever
 from tinyrag.searcher.emb_recall.emb_retriever import EmbRetriever
 from tinyrag.searcher.reranker.reanker_bge_m3 import RerankerBGEM3
+
+def process_text(doc, emb_model, emb_retriever):
+    doc_emb = emb_model.get_embedding(doc)
+    emb_retriever.insert(doc_emb, doc)
 
 class Searcher:
     def __init__(self, emb_model_id: str, ranker_model_id: str, device:str="cpu", base_dir: str="data/db") -> None:
@@ -40,6 +45,33 @@ class Searcher:
             self.emb_retriever.insert(doc_emb, doc)
         logger.info("emb retriever build success...")
 
+
+    # def _process_doc(self, doc: str):
+    #     """
+    #     处理单个文档，获取嵌入向量并插入到检索器中。
+    #     """
+    #     doc_emb = self.emb_model.get_embedding(doc)
+    #     self.emb_retriever.insert(doc_emb, doc)    
+
+    # def build_db(self, docs: List[str]):
+    #     self.bm25_retriever.build(docs)
+    #     logger.info("bm25 retriever build success...")
+
+    #     # 使用多线程处理文档
+    #     with ThreadPoolExecutor() as executor:
+    #         futures = []
+    #         for doc in docs:
+    #             future = executor.submit(self._process_doc, doc)
+    #             futures.append(future)
+            
+    #         # 使用tqdm显示进度条
+    #         for future in tqdm(as_completed(futures), total=len(futures), desc="emb build "):
+    #             future.result()  # 等待每个任务完成
+
+    #     logger.info("emb retriever build success...")
+
+    
+        
     def save_db(self):
         # self.base_dir = base_dir
         self.bm25_retriever.save_bm25_data()

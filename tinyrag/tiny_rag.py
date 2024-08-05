@@ -14,20 +14,17 @@ from tinyrag import SentenceSplitter
 from tinyrag.utils import write_list_to_jsonl
 
 
-RAG_PROMPT_TEMPALTE="""请根据可参考的上下文来修正问题的回答；输出中文，直接输出文字，不要有引号，输出字数应在{word_num}字左右。
-
-## 可参考的上下文
-```
+RAG_PROMPT_TEMPALTE="""参考信息：
 {context}
-```
-
-## 提出的问题
+---
+我的问题或指令：
 {question}
-
-## 问题的回答
+---
+我的回答：
 {answer}
-
-修正的回答:"""
+---
+请根据上述参考信息回答和我的问题或指令，修正我的回答。前面的参考信息可能有用，也可能没用，你需要从我给出的参考信息中选出与我的问题最相关的那些，来为你修正的回答提供依据。回答一定要忠于原文，简洁但不丢信息，不要胡乱编造。我的问题或指令是什么语种，你就用什么语种回复, 你修正的回答字数应在{word_num}字左右
+你修正的回答"""
 
 
 @dataclass
@@ -39,7 +36,7 @@ class RAGConfig:
     device:str = "cpu"
     sent_split_model_id:str = "models/nlp_bert_document-segmentation_chinese-base"
     sent_split_use_model:bool = False
-    sent_split_min_sent_len:int = 300
+    sentence_size:int = 256
     model_type: str = "tinyllm"
 
 def process_docs_text(docs_text, sent_split_model):
@@ -75,7 +72,7 @@ class TinyRAG:
         """
         self.sent_split_model = SentenceSplitter(
             use_model=False, 
-            min_sent_len=self.config.sent_split_min_sent_len, 
+            sentence_size=self.config.sentence_size, 
             model_path=self.config.sent_split_model_id
         )
         logger.info("load sentence splitter model success! ")
