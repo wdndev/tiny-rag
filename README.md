@@ -11,7 +11,7 @@
   - 在线检索离线数据库；
   - 将检索结果重排后，送到llm，构造prompt，llm输出结果
 
-拟采用技术：
+采用技术：
 
 - 文档解析：支持 txt, markdown, pdf, word, ppt，图像等向量化
 - 文档embedding：主要使用bge，同时有在线zhipu，openai embedding
