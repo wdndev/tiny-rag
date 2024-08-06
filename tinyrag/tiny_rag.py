@@ -23,9 +23,8 @@ RAG_PROMPT_TEMPALTE="""参考信息：
 我的回答：
 {answer}
 ---
-请根据上述参考信息回答和我的问题或指令，修正我的回答。前面的参考信息可能有用，也可能没用，你需要从我给出的参考信息中选出与我的问题最相关的那些，来为你修正的回答提供依据。回答一定要忠于原文，简洁但不丢信息，不要胡乱编造。我的问题或指令是什么语种，你就用什么语种回复, 你修正的回答字数应在{word_num}字左右
-你修正的回答"""
-
+请根据上述参考信息回答和我的问题或指令，修正我的回答。前面的参考信息和我的回答可能有用，也可能没用，你需要从我给出的参考信息中选出与我的问题最相关的那些，来为你修正的回答提供依据。回答一定要忠于原文，简洁但不丢信息，不要胡乱编造。我的问题或指令是什么语种，你就用什么语种回复。
+你修正的回答:"""
 
 @dataclass
 class RAGConfig:
@@ -106,15 +105,14 @@ class TinyRAG:
         llm_result_txt = self.llm.generate(query)
         # 数据库检索的文本
         ## 拼接 query和LLM初次生成的结果，查找向量数据库
-        search_content_list = self.searcher.search(query=query+llm_result_txt, top_n=top_n)
+        search_content_list = self.searcher.search(query=query+llm_result_txt+query, top_n=top_n)
         content_list = [item[1] for item in search_content_list]
         context = "\n".join(content_list)
         # 构造 prompt
         prompt_text = RAG_PROMPT_TEMPALTE.format(
             context=context,
             question=query,
-            answer=llm_result_txt,
-            word_num=len(llm_result_txt)
+            answer=llm_result_txt
         )
         logger.info("prompt: {}".format(prompt_text))
         # 生成最终答案
