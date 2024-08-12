@@ -2,16 +2,17 @@
 
 ## 1.简介
 
-准备实现一个很小很小的RAG系统；
+实现一个很小很小的RAG系统；
 
 技术路线：
 
-- 初步计划：
   - 将wiki、baike 特定的文本进行向量化后，存储在离线向量数据库中；
   - 在线检索离线数据库；
   - 将检索结果重排后，送到llm，构造prompt，llm输出结果
 
 采用技术：
+
+![alt text](image.png)
 
 - 文档解析：支持 txt, markdown, pdf, word, ppt，图像等向量化
 - 文档embedding：主要使用bge，同时有在线zhipu，openai embedding
