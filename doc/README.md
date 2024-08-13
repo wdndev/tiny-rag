@@ -1,6 +1,26 @@
 
+# Tiny RAG Doc
 
-## 一些参考网址
+## 1.RAG 简介
+
+- [RAG技术简介](./rag/RAG技术.md)
+
+## 2.Index
+
+- [Embedding模型](./index/Embedding模型.md)
+
+## 3.Searching
+
+- [两阶段检索](./search/两阶段检索.md)
+- [Rerank vs Embedding](./search/ReRank%20vs%20Embedding.md)
+
+## 4.Query
+
+
+## 5.LLM
+
+
+## 6.一些参考网址
 
 faiss
 
