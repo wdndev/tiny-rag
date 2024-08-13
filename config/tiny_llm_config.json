@@ -6,6 +6,6 @@
     "device": "cpu",
     "sent_split_model_id": "models/nlp_bert_document-segmentation_chinese-base",
     "sent_split_use_model": false,
-    "sentence_size": 300,
+    "sentence_size": 256,
     "model_type": "tinyllm"
 }

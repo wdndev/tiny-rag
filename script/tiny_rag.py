@@ -13,7 +13,7 @@ from tinyrag import RAGConfig, TinyRAG
 from tinyrag.utils import read_json_to_list
 
 def build_db(config_path, data_path):
-    # json_path = "data/raw_data/wikipedia-cn-20230720-filtered.json"
+
     raw_data_list = read_json_to_list(data_path)
     logger.info("load raw data success! ")
     # 数据太多了，随机采样 100 条数据
@@ -34,7 +34,7 @@ def query_search(config_path):
     tiny_rag = TinyRAG(config=rag_config)
     logger.info("tiny rag init success!")
     tiny_rag.load()
-    query = "中国什么时间举办奥运会的？"
+    query = "请介绍一下北京"
     output = tiny_rag.search(query, top_n=6)
     print("output: ", output)
 

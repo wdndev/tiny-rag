@@ -4,7 +4,15 @@
 
 实现一个很小很小的RAG系统；
 
+详细文档：[doc](doc/README.md)
+
 ### 1.1 RAG简介
+
+**检索增强 LLM ( Retrieval Augmented LLM )**，简单来说，**就是给 LLM 提供外部数据库，对于用户问题 ( Query )，通过一些信息检索 ( Information Retrieval, IR ) 的技术，先从外部数据库中检索出和用户问题相关的信息，然后让 LLM 结合这些相关信息来生成结果**。下图是一个检索增强 LLM 的简单示意图。
+
+![](doc/rag/image/lr3r0h6wjf_VCg5aguvM7.png)
+
+传统的信息检索工具，比如 Google/Bing 这样的搜索引擎，只有检索能力 ( **Retrieval-only** )，现在 LLM 通过预训练过程，将海量数据和知识嵌入到其巨大的模型参数中，具有记忆能力 ( **Memory-only** )。从这个角度看，检索增强 LLM 处于中间，将 LLM 和传统的信息检索相结合，通过一些信息检索技术将相关信息加载到 LLM 的工作内存 ( **Working Memory** ) 中，即 LLM 的上下文窗口 ( **Context Window** )，亦即 LLM 单次生成时能接受的最大文本输入。
 
 ### 1.2 技术路线
 
@@ -59,8 +67,102 @@
 
 ```
 
+## 3.运行
 
-一些效果：
+主要运行脚本位于 `script` 文件夹下；
+
+### 3.1 需要下载的模型
+
+- [Qwen2 LLM]()
+- [bge-reranker-base]()
+- [bge-small-zh-v1.5]()
+- [clip-ViT-B-32]()
+- [nlp_bert_document-segmentation_chinese-base]()
+
+> 注意：为了测试，模型都比较小，如果需要追求好一点的效果，请使用更大的模型；
+> 注意：如果不需要图片向量化，不用下载`clip-ViT-B-32`
+
+### 3.2 配置文件 `RAGConfig`
+
+配置文件在 `config` 目录下，详细配置类位于 `tinyrag\tiny_rag.py`
+
+`RAGConfig`配置类
+
+```python
+class RAGConfig:
+    base_dir:str = "data/wiki_db"                     # 工作目录
+    llm_model_id:str = "models/tiny_llm_sft_92m"      # LLM 模型
+    emb_model_id: str = "models/bge-small-zh-v1.5"    # 文本 embedding 模型
+    ranker_model_id:str = "models/bge-reranker-base"  # 排序模型
+    device:str = "cpu"                                # 模型运行设备
+    sent_split_model_id:str = "models/nlp_bert_document-segmentation_chinese-base"  # 句子分割模型
+    sent_split_use_model:bool = False                 # 句子分割是否需要使用模型
+    sentence_size:int = 256                           # 句子最大长度
+    model_type: str = "tinyllm"                       # 推理模型，支持 [qwen2, tinyllm]
+```
+
+json 配置文件 `config\qwen2_config.json`
+
+```json
+{
+    "base_dir": "data/wiki_db",
+    "llm_model_id": "models/tiny_llm_sft_92m",
+    "emb_model_id": "models/bge-small-zh-v1.5",
+    "ranker_model_id": "models/bge-reranker-base",
+    "device": "cpu",
+    "sent_split_model_id": "models/nlp_bert_document-segmentation_chinese-base",
+    "sent_split_use_model": false,
+    "sentence_size": 256,
+    "model_type": "qwen2"
+}
+```
+
+### 3.3 构建离线数据库
+
+需要将一个个 doc 文档存入列表，或是文件读取，具体代码参考如下，来自 `script/tiny_rag.py`
+
+```python
+def build_db(config_path, data_path):
+    # json_path = "data/raw_data/wikipedia-cn-20230720-filtered.json"
+    raw_data_list = read_json_to_list(data_path)
+    logger.info("load raw data success! ")
+    # 数据太多了，随机采样 100 条数据
+    # raw_data_part = random.sample(raw_data_list, 100)
+
+    text_list = [item["completion"] for item in raw_data_list]
+
+    # config_path = "config/build_config.json"
+    config = read_json_to_list(config_path)
+    rag_config = RAGConfig(**config)
+    tiny_rag = TinyRAG(config=rag_config)
+    tiny_rag.build(text_list)
+```
+
+运行如下命令，构造离线数据库
+
+```python
+python script/tiny_rag.py -t build -c config/qwen2_config.json -p data/raw_data/wikipedia-cn-20230720-filtered.json
+```
+
+离线数据库会储存在配置文件 `base_dir` 目录下，具体有以下文件：
+
+```shell
+├─bm_corpus         # bm25 检索离线数据库
+└─faiss_idx         # 向量检索离线数据库
+    └─index_512
+```
+
+### 3.4 在线检索
+
+> 注意：确保之前已经构建完成离线数据库了
+
+运行以下命令，开始在线检索数据库：
+
+```python
+python script/tiny_rag.py -t search -c config/qwen2_config.json
+```
+
+输出
 
 ```shell
 prompt: 参考信息：
@@ -82,4 +184,27 @@ prompt: 参考信息：
 你修正的回答:
 output:  北京是中国的一座古代文明首都。它的建筑历史可以追溯到公元前4世纪。故宫是明清时期的中国皇宫。长城是世界著名的旅游景点之一，也是中国古代建筑的杰出代表。这些城墙的长度大约为40公里，建筑面积约为15万平方米。除此之外，中国还修建了众多宫殿和庙宇，以及其他著名的建筑，如故宫博物馆和颐和园等。
 ```
+
+## 4.开发
+
+### 4.1 向量模型
+
+
+### 4.2 LLM
+
+
+### 4.3 多路召回
+
+
+### 4.4 重排模型
+
+
+## 5.参考
+
+| Name                                                         | Paper Link                                |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| When Large Language Models Meet Vector Databases: A Survey   | [paper](http://arxiv.org/abs/2402.01763)  |
+| Retrieval-Augmented Generation for Large Language Models: A Survey | [paper](https://arxiv.org/abs/2312.10997) |
+| Learning to Filter Context for Retrieval-Augmented Generation | [paper](http://arxiv.org/abs/2311.08377)  |
+| In-Context Retrieval-Augmented Language Models               | [paper](https://arxiv.org/abs/2302.00083) |
 
