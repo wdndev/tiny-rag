@@ -73,14 +73,16 @@
 
 ### 3.1 需要下载的模型
 
-- [Qwen2 LLM]()
-- [bge-reranker-base]()
-- [bge-small-zh-v1.5]()
-- [clip-ViT-B-32]()
-- [nlp_bert_document-segmentation_chinese-base]()
+- [Qwen2 LLM](https://huggingface.co/collections/Qwen/qwen2-6659360b33528ced941e557f)
+- [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base)
+- [bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-base-zh-v1.5)
+- [clip-ViT-B-32](https://huggingface.co/sentence-transformers/clip-ViT-B-32)
+- [nlp_bert_document-segmentation_chinese-base](https://www.modelscope.cn/models/iic/nlp_bert_document-segmentation_chinese-base)
 
 > 注意：为了测试，模型都比较小，如果需要追求好一点的效果，请使用更大的模型；
+> 
 > 注意：如果不需要图片向量化，不用下载`clip-ViT-B-32`
+> 
 
 ### 3.2 配置文件 `RAGConfig`
 
