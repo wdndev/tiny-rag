@@ -167,7 +167,6 @@ python script/tiny_rag.py -t search -c config/qwen2_config.json
 ```shell
 prompt: 参考信息：
 现居于北京市。
-现居于北京市。
 * 北京：北京
 其总部设立于中国的首都北京。
 两京并立，北京为首都，南京为留都。

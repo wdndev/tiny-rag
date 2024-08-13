@@ -3,7 +3,10 @@ import copy
 from loguru import logger
 from tqdm import tqdm
 from typing import Dict, List, Optional, Tuple, Union
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import jieba
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 from tinyrag.embedding.hf_emb import HFSTEmbedding
 from tinyrag.searcher.bm25_recall.bm25_retriever import BM25Retriever
@@ -87,12 +90,12 @@ class Searcher:
         logger.info("emb retriever load success...")
 
     def search(self, query:str, top_n=3) -> list:
-        bm25_recall_list = self.bm25_retriever.search(query, top_n)
+        bm25_recall_list = self.bm25_retriever.search(query, 2 * top_n)
         logger.info("bm25 recall text num: {}".format(len(bm25_recall_list)))
         # for text in bm25_recall_list:
         #     print(text)
         query_emb = self.emb_model.get_embedding(query)
-        emb_recall_list = self.emb_retriever.search(query_emb, top_n)
+        emb_recall_list = self.emb_retriever.search(query_emb, 2 * top_n)
         logger.info("emb recall text num: {}".format(len(emb_recall_list)))
         # for text in emb_recall_list:
         #     print(text)
