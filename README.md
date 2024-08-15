@@ -22,7 +22,7 @@
 
 ### 1.3 采用技术
 
-![alt text](image.png)
+![alt text](doc/image.png)
 
 - 文档解析：支持 txt, markdown, pdf, word, ppt，图像等向量化
 - 文档embedding：主要使用bge，同时有在线zhipu，openai embedding
