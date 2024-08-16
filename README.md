@@ -190,15 +190,118 @@ output:  北京是中国的一座古代文明首都。它的建筑历史可以�
 
 ### 4.1 向量模型
 
+向量模型位于 `tinyrag/embedding` 目录下，现支持如下 embeddings :
+
+- HF embeddings : BGE ...
+- IMG embedding : CLIP ...
+- openai embedding
+- zhipuai embedding
+
+如果想要增加其他 embeddings 模型，继承 `tinyrag/embedding/base_emb.py` 文件中 `BaseEmbedding` 类，实现 `get_embedding` 方法即可。
+
+`BaseEmbedding` 基类，如下所示：
+
+```python
+class BaseEmbedding(ABC):
+    """
+    Base class for embeddings
+    """
+    def __init__(self, path: str, is_api: bool) -> None:
+        self.path = path
+        self.is_api = is_api
+        self.name = ""
+
+    @abstractmethod
+    def get_embedding(self, text: str) -> List[float]:
+        raise NotImplementedError
+
+    @classmethod
+    def cosine_similarity(cls, vector1: List[float], vector2: List[float]) -> float:
+        """
+        calculate cosine similarity between two vectors
+        """
+        dot_product = np.dot(vector1, vector2)
+        magnitude = np.linalg.norm(vector1) * np.linalg.norm(vector2)
+        if not magnitude:
+            return 0
+        return dot_product / magnitude
+    
+    @classmethod
+    def cosine_similarity2(cls, vector1: List[float], vector2: List[float]) -> float:
+        sim = F.cosine_similarity(torch.Tensor(vector1), torch.Tensor(vector2), dim=-1)
+        return sim.numpy().tolist()
+```
 
 ### 4.2 LLM
 
+LLM 模型实现方式和 embedding 类似， 位于 `tinyrag/llm` 目录下，现支持如下 llm :
 
-### 4.3 多路召回
+- Qwen 
+- tinyllm
+
+如果想要增加其他 LLM 模型，继承 `tinyrag/llm/base_llm.py` 文件中 `BaseLLM` 类，实现 `generate` 方法即可。
+
+`BaseLLM` 基类，如下所示：
+
+```python
+class BaseLLM(ABC):
+    """
+    Base class for embeddings
+    """
+    def __init__(self, model_id_key: str, device:str = "cpu", is_api=False) -> None:
+        super().__init__()
+        self.model_id_key = model_id_key
+        self.device = device
+        self.is_api = is_api
+
+    @abstractmethod
+    def generate(self, content: str) -> str:
+        raise NotImplemented
+
+```
+
+### 4.3 检索模块
+
+tiny-rag 实现了双路召回：bm25召回和向量召回，实现重排模型，相关代码位于 `tinyrag/searcher` 目录下。
+
+#### （1）多路召回
+
+召回模块是实现了双路召回：
+
+- bm25召回：`tinyrag/searcher/bm25_recall`
+- 向量召回：`tinyrag/searcher/bm25_recall`
 
 
-### 4.4 重排模型
+#### （2）重排模型
 
+重排模型采用 bge-reranker-m3模型： `tinyrag/searcher/reranker`
+
+#### （3）整体流程
+
+将两路召回结果合并后，进行重排，部分实现代码如下所示：
+
+```python
+def search(self, query:str, top_n=3) -> list:
+    bm25_recall_list = self.bm25_retriever.search(query, 2 * top_n)
+    logger.info("bm25 recall text num: {}".format(len(bm25_recall_list)))
+
+    query_emb = self.emb_model.get_embedding(query)
+    emb_recall_list = self.emb_retriever.search(query_emb, 2 * top_n)
+    logger.info("emb recall text num: {}".format(len(emb_recall_list)))
+
+    recall_unique_text = set()
+    for idx, text, score in bm25_recall_list:
+        recall_unique_text.add(text)
+
+    for idx, text, score in emb_recall_list:
+        recall_unique_text.add(text)
+
+    logger.info("unique recall text num: {}".format(len(recall_unique_text)))
+
+    rerank_result = self.ranker.rank(query, list(recall_unique_text), top_n)
+
+    return rerank_result
+```
 
 ## 5.参考
 
