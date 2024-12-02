@@ -2,7 +2,6 @@
 import re
 from typing import List
 from modelscope.pipelines import pipeline
-from modelscope.pipelines import pipeline
 
 class SentenceSplitter:
     """ 句子分割模型
