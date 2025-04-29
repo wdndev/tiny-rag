@@ -4,6 +4,7 @@
 ## 1.RAG 简介
 
 - [RAG技术简介](./rag/RAG技术.md)
+- [大模型 RAG 基础：信息检索、文本向量化及 BGE-M3 embedding 实践（2024）](https://arthurchiao.art/blog/rag-basis-bge-zh/)
 
 ## 2.Index
 
